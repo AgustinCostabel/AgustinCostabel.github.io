@@ -1,30 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Archlight — Indie Game Developer portfolio" />
   <title>Archlight — Game Developer</title>
+
+  <!-- Typography: Space Grotesk for the identity, Inter for readable body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-  <header class="hero">
-    <img src="assets/logo.png" alt="Archlight Logo" class="logo" />
-    <h1>Archlight</h1>
-    <p class="subtitle">Indie Game Developer</p>
-  </header>
+  <div class="bg" aria-hidden="true">
+    <video class="background-video" autoplay muted loop playsinline>
+      <source src="assets/background.mp4" type="video/mp4">
+    </video>
 
-  <main>
-    <section class="about">
-      <p>
-        I create mysterious, atmospheric games with a focus on mood,
-        narrative, and player curiosity.
-      </p>
-    </section>
+    <div class="background-overlay"></div>
+    <div class="mist"></div>
+    <div class="beam"></div>
+    <div class="lightning"></div>
+    <div class="vignette"></div>
+  </div>
 
-    <section class="projects">
-      <h2>Proyectos</h2>
+  <div class="page">
+
+    <header class="top-bar">
+      <!-- Replace this file with your transparent logo PNG when you have it. -->
+      <img src="assets/logo-transparent.png" alt="Archlight Logo" class="logo" />
+      <div class="brand">
+        <h1>Archlight</h1>
+        <p class="subtitle">Indie Game Developer</p>
+      </div>
+    </header>
+
+    <main class="projects">
+      <div class="section-heading">
+        <span class="eyebrow">Selected work</span>
+        <h2>Proyectos</h2>
+      </div>
 
       <div class="project-grid">
 
@@ -32,27 +54,47 @@
           <img src="assets/project-unity.svg" alt="Captura del proyecto hecho en Unity" loading="lazy">
           <span class="project-title">Nombre del juego</span>
           <span class="project-engine">Unity</span>
+          <p class="project-description">Breve descripción del juego: de qué se trata y qué lo hace particular.</p>
         </a>
 
         <a class="project-card" href="#" target="_blank" rel="noopener">
           <img src="assets/project-godot.svg" alt="Captura del proyecto hecho en Godot" loading="lazy">
           <span class="project-title">Nombre del juego</span>
           <span class="project-engine">Godot</span>
+          <p class="project-description">Breve descripción del juego: de qué se trata y qué lo hace particular.</p>
         </a>
 
         <a class="project-card" href="#" target="_blank" rel="noopener">
           <img src="assets/project-cocos.svg" alt="Captura del proyecto hecho en Cocos Dashboard" loading="lazy">
           <span class="project-title">Nombre del juego</span>
           <span class="project-engine">Cocos Dashboard</span>
+          <p class="project-description">Breve descripción del juego: de qué se trata y qué lo hace particular.</p>
         </a>
 
       </div>
-    </section>
-  </main>
+    </main>
 
-  <footer>
-    <p>© Archlight</p>
-  </footer>
+    <div class="socials" aria-label="Redes sociales">
+      <a class="social-link" href="#" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src="assets/linkedin.svg" alt="" aria-hidden="true">
+      </a>
+      <a class="social-link" href="#" target="_blank" rel="noopener" aria-label="GitHub">
+        <img src="assets/github.svg" alt="" aria-hidden="true">
+      </a>
+      <a class="social-link" href="#" target="_blank" rel="noopener" aria-label="itch.io">
+        <img src="assets/itchio.svg" alt="" aria-hidden="true">
+      </a>
+      <a class="social-link" href="#" target="_blank" rel="noopener" aria-label="X / Twitter">
+        <img src="assets/x.svg" alt="" aria-hidden="true">
+      </a>
+    </div>
+
+    <footer>
+      <p>© Archlight</p>
+    </footer>
+
+  </div>
 
 </body>
+
 </html>

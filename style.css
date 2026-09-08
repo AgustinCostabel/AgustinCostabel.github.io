@@ -5,83 +5,264 @@
   box-sizing: border-box;
 }
 
-/* Base */
-body {
-  background-color: #121417; /* dark but not pure black */
-  color: #e6e6e6;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  line-height: 1.6;
+/* ---------- Design controls ---------- */
+:root {
+  --logo-scale: 5;
+  --title-scale: 1.5;
+  --card-scale: 1;
+
+  --bg: #05070a;
+  --text: #edf1f7;
+  --muted: #929aa8;
+  --line: rgba(220, 232, 255, 0.13);
+  --glass: rgba(7, 12, 20, 0.42);
+  --accent: #b9d7ff;
 }
 
-/* Hero section */
-.hero {
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ---------- Atmospheric background ---------- */
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #05070a;
+  pointer-events: none;
+}
+
+.background-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center center;
+
+  display: block;
+
+  filter: saturate(0.9) brightness(0.72) contrast(1.05);
+  transform: scale(1.03);
+}
+
+/* Keeps the GIF atmospheric without making the text hard to read. */
+.background-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(2, 5, 10, 0.38) 0%, rgba(3, 8, 15, 0.12) 42%, rgba(2, 6, 12, 0.34) 100%),
+    radial-gradient(ellipse at 50% 42%, transparent 20%, rgba(0, 0, 0, 0.28) 100%);
+}
+
+.mist {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 20%;
+  height: 30%;
+  background:
+    radial-gradient(ellipse at center, rgba(130, 165, 205, 0.08), transparent 68%),
+    linear-gradient(to bottom, transparent, rgba(170, 200, 225, 0.035), transparent);
+  filter: blur(18px);
+  animation: mist-drift 20s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes mist-drift {
+  from {
+    transform: translateX(-3%);
+    opacity: 0.55;
+  }
+
+  to {
+    transform: translateX(3%);
+    opacity: 0.9;
+  }
+}
+
+/* A very soft lighthouse-like sweep layered over the GIF. */
+.beam {
+  position: absolute;
+  top: -8%;
+  left: -8%;
+  width: 150vmax;
+  height: 150vmax;
+  background: conic-gradient(from -34deg at 0% 0%,
+      rgba(225, 238, 255, 0.07) 0deg,
+      rgba(225, 238, 255, 0.018) 12deg,
+      transparent 25deg,
+      transparent 360deg);
+  transform-origin: 0 0;
+  animation: sweep 18s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+@keyframes sweep {
+  from {
+    transform: rotate(-5deg);
+  }
+
+  to {
+    transform: rotate(24deg);
+  }
+}
+
+.lightning {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse at 64% 28%, rgba(205, 225, 255, 0.12), transparent 8%),
+    linear-gradient(105deg, transparent 0 55%, rgba(190, 218, 255, 0.03) 64%, transparent 74%);
+  animation: flash 17s infinite;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@keyframes flash {
+
+  0%,
+  91%,
+  100% {
+    opacity: 0;
+  }
+
+  92% {
+    opacity: 0.65;
+  }
+
+  92.4% {
+    opacity: 0.08;
+  }
+
+  92.8% {
+    opacity: 0.4;
+  }
+
+  93.2% {
+    opacity: 0;
+  }
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 34%, rgba(0, 0, 0, 0.48) 100%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .mist,
+  .beam,
+  .lightning {
+    animation: none;
+  }
+}
+
+/* ---------- Layout ---------- */
+
+.page {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(2rem, 6vw, 4.5rem);
+}
+
+/* ---------- Header ---------- */
+
+.top-bar {
+  display: flex;
   align-items: center;
-  text-align: center;
   gap: 1rem;
+  transform: translateY(100px);
 }
 
-/* Logo */
 .logo {
-  width: 180px;
+  width: clamp(calc(64px * var(--logo-scale)),
+      calc(8vw * var(--logo-scale)),
+      calc(100px * var(--logo-scale)));
   height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(190, 218, 255, 0.22));
 }
 
-/* Title */
-h1 {
-  font-size: 3rem;
+.brand h1,
+.projects h2,
+.eyebrow {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.brand h1 {
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
 }
 
-/* Subtitle */
 .subtitle {
-  font-size: 1.1rem;
-  color: #a0a0a0;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: var(--muted);
+  letter-spacing: 0.04em;
 }
 
-/* About */
-.about {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
-  text-align: center;
-}
+/* ---------- Projects ---------- */
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.9rem;
-  color: #777;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Projects section */
 .projects {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem 4rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.25rem, 3vh, 2rem);
   text-align: center;
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  color: rgba(185, 215, 255, 0.65);
 }
 
 .projects h2 {
-  font-size: 1.6rem;
+  font-size: clamp(1.7rem, 2.8vw, 2.35rem);
   font-weight: 600;
-  letter-spacing: 0.05em;
-  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
 }
 
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1180px;
 }
 
 .project-card {
@@ -92,14 +273,24 @@ a:hover {
   text-decoration: none;
   padding: 0.75rem;
   border: 1px solid transparent;
-  border-radius: 6px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  border-radius: 12px;
+  width: clamp(calc(220px * var(--card-scale)),
+      calc(24vw * var(--card-scale)),
+      calc(340px * var(--card-scale)));
+  background: rgba(7, 12, 20, 0.10);
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .project-card:hover,
 .project-card:focus-visible {
-  border-color: #3a3f47;
-  transform: translateY(-3px);
+  border-color: var(--line);
+  background: var(--glass);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.22);
+  transform: translateY(-5px);
   text-decoration: none;
 }
 
@@ -107,25 +298,125 @@ a:hover {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
   display: block;
 }
 
 .project-title {
-  margin-top: 0.85rem;
-  font-size: 1rem;
+  margin-top: 0.8rem;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.05rem;
   font-weight: 500;
 }
 
 .project-engine {
-  font-size: 0.85rem;
-  color: #a0a0a0;
-  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+  opacity: 0.72;
+  margin-top: 0.1rem;
 }
 
-/* Mobile: stack the 3 cards */
-@media (max-width: 700px) {
+.project-description {
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #9098a5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- Social links ---------- */
+
+.socials {
+  position: fixed;
+  right: clamp(1.5rem, 4vw, 3rem);
+  bottom: clamp(1.5rem, 4vw, 2.5rem);
+  z-index: 5;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.social-link {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(220, 232, 255, 0.13);
+  border-radius: 10px;
+  background: rgba(5, 9, 15, 0.48);
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.social-link img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  opacity: 0.78;
+  filter: brightness(0) invert(1);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(185, 215, 255, 0.38);
+  background: rgba(20, 31, 48, 0.68);
+}
+
+.social-link:hover img,
+.social-link:focus-visible img {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  text-align: center;
+  font-size: 0.72rem;
+  color: #666e7a;
+  padding-top: 1rem;
+}
+
+a:focus-visible {
+  outline: 2px solid rgba(185, 215, 255, 0.65);
+  outline-offset: 3px;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-height: 700px),
+(max-width: 780px) {
+  body {
+    overflow: auto;
+  }
+
+  .page {
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   .project-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .project-card {
+    width: min(320px, 80vw);
+  }
+
+  .socials {
+    position: static;
+    justify-content: center;
+    margin-top: 1.5rem;
   }
 }
