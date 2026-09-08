@@ -1,0 +1,67 @@
+/* Projects section — append this to your style.css */
+
+.projects {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+  text-align: center;
+}
+
+.projects h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  padding: 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+  border-color: #3a3f47;
+  transform: translateY(-3px);
+  text-decoration: none;
+}
+
+.project-card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.project-title {
+  margin-top: 0.85rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.project-engine {
+  font-size: 0.85rem;
+  color: #a0a0a0;
+  margin-top: 0.15rem;
+}
+
+/* Mobile: stack the 3 cards */
+@media (max-width: 700px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
