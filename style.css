@@ -7,7 +7,7 @@
 
 /* ---------- Design controls ---------- */
 :root {
-  --logo-scale: 5;
+  --logo-scale: 3;
   --title-scale: 1.5;
   --card-scale: 1;
 
@@ -17,6 +17,9 @@
   --line: rgba(220, 232, 255, 0.13);
   --glass: rgba(7, 12, 20, 0.42);
   --accent: #b9d7ff;
+
+  --font-title: "Cormorant Garamond", serif;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
 html,
@@ -27,7 +30,7 @@ body {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.6;
   position: relative;
   overflow-x: hidden;
@@ -191,9 +194,43 @@ body {
 
 .top-bar {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.identity {
+  display: flex;
   align-items: center;
   gap: 1rem;
-  transform: translateY(100px);
+}
+
+.about-me {
+  max-width: min(440px, 40vw);
+  text-align: left;
+  padding: 1.1rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+}
+
+.about-me .eyebrow {
+  display: block;
+}
+
+.about-me h3 {
+  font-family: var(--font-title);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  font-weight: 600;
+  margin-top: 0.3rem;
+}
+
+.about-me p {
+  margin-top: 0.55rem;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.6;
+  color: rgba(237, 241, 247, 0.78);
 }
 
 .logo {
@@ -205,10 +242,42 @@ body {
   filter: drop-shadow(0 0 18px rgba(190, 218, 255, 0.22));
 }
 
+.logo-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+/* Ubicado sobre la estrella real del logo (calculado en píxeles del PNG).
+   Si en algún momento cambiás el archivo del logo, estos porcentajes
+   van a necesitar reajustarse a mano. */
+.logo-star-glow {
+  position: absolute;
+  left: 48.8%;
+  top: 34.5%;
+  width: 22%;
+  height: 22%;
+  transform: translate(-50%, -50%) scale(1);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+      rgba(255, 240, 190, 0.95) 0%,
+      rgba(255, 220, 150, 0.55) 35%,
+      rgba(255, 210, 130, 0) 72%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.identity:hover .logo-star-glow {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(2.3);
+}
+
 .brand h1,
 .projects h2,
 .eyebrow {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: var(--font-title);
 }
 
 .brand h1 {
@@ -296,15 +365,48 @@ body {
 
 .project-card img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 16;
   object-fit: cover;
   border-radius: 8px;
   display: block;
+  transition: filter 0.4s ease;
+}
+
+/* Efecto "faro": pasar el mouse por el logo ilumina las tarjetas, una a una */
+.logo {
+  cursor: default;
+  transition: filter 0.3s ease;
+}
+
+.page:has(.logo:hover) .project-card {
+  border-color: rgba(255, 214, 140, 0.5);
+  background: var(--glass);
+  box-shadow: 0 0 50px rgba(255, 200, 110, 0.32), 0 16px 45px rgba(0, 0, 0, 0.22);
+}
+
+.page:has(.logo:hover) .project-card img {
+  filter: brightness(1.2) saturate(1.15) sepia(0.12) hue-rotate(-8deg);
+}
+
+.page:has(.logo:hover) .project-card:nth-child(1) {
+  transition-delay: 0s;
+}
+
+.page:has(.logo:hover) .project-card:nth-child(2) {
+  transition-delay: 0.12s;
+}
+
+.page:has(.logo:hover) .project-card:nth-child(3) {
+  transition-delay: 0.24s;
+}
+
+.identity:hover .logo {
+  filter: drop-shadow(0 0 30px rgba(255, 214, 140, 0.55));
 }
 
 .project-title {
   margin-top: 0.8rem;
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: var(--font-title);
   font-size: 1.05rem;
   font-weight: 500;
 }
@@ -402,7 +504,18 @@ a:focus-visible {
     justify-content: center;
     text-align: center;
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .identity {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-me {
+    text-align: left;
+    max-width: min(440px, 90vw);
   }
 
   .project-grid {
